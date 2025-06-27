@@ -1,0 +1,221 @@
+2025-06-27 20:56:22,078 - __main__ - INFO - Server initialized for threading.
+2025-06-27 20:56:22,084 - __main__ - INFO - Successfully connected to MongoDB collections
+2025-06-27 20:56:22,086 - __main__ - INFO - TTL indexes created successfully
+2025-06-27 20:56:22,091 - __main__ - INFO - Starting Secure Chat Application on 0.0.0.0:5000
+2025-06-27 20:56:22,091 - __main__ - INFO - Debug mode: True
+2025-06-27 20:56:22,091 - __main__ - INFO - Upload folder: static/uploads
+2025-06-27 20:56:22,091 - __main__ - INFO - Max file size: 3.0MB
+2025-06-27 20:56:22,100 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.100:5000
+2025-06-27 20:56:22,100 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-27 20:56:24,732 - __main__ - INFO - xjauvdHVoEKAFMSpAAAA: Sending packet OPEN data {'sid': 'xjauvdHVoEKAFMSpAAAA', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:56:24,732 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:24] "GET /socket.io/?EIO=4&transport=polling&t=PUn_p_P HTTP/1.1" 200 -
+2025-06-27 20:56:24,739 - __main__ - ERROR - http://127.0.0.1:5000 is not an accepted origin. (further occurrences of this error will be logged with level INFO)
+2025-06-27 20:56:24,739 - __main__ - ERROR - http://127.0.0.1:5000 is not an accepted origin. (further occurrences of this error will be logged with level INFO)
+2025-06-27 20:56:24,739 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:24] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_p_W&sid=xjauvdHVoEKAFMSpAAAA HTTP/1.1[0m" 400 -
+2025-06-27 20:56:24,739 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:24] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=xjauvdHVoEKAFMSpAAAA HTTP/1.1[0m" 400 -
+2025-06-27 20:56:24,745 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:24,746 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:24] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_p_d&sid=xjauvdHVoEKAFMSpAAAA HTTP/1.1[0m" 400 -
+2025-06-27 20:56:25,732 - __main__ - INFO - jvWteDp33-uwYWDqAAAB: Sending packet OPEN data {'sid': 'jvWteDp33-uwYWDqAAAB', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:56:25,732 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:25] "GET /socket.io/?EIO=4&transport=polling&t=PUn_qF1 HTTP/1.1" 200 -
+2025-06-27 20:56:25,738 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:25,739 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:25,739 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:25] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_qF8&sid=jvWteDp33-uwYWDqAAAB HTTP/1.1[0m" 400 -
+2025-06-27 20:56:25,739 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:25] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=jvWteDp33-uwYWDqAAAB HTTP/1.1[0m" 400 -
+2025-06-27 20:56:25,745 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:25,745 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:25] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_qFF&sid=jvWteDp33-uwYWDqAAAB HTTP/1.1[0m" 400 -
+2025-06-27 20:56:27,732 - __main__ - INFO - YnOn4wG-rtn5asYXAAAC: Sending packet OPEN data {'sid': 'YnOn4wG-rtn5asYXAAAC', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:56:27,732 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:27] "GET /socket.io/?EIO=4&transport=polling&t=PUn_qkH HTTP/1.1" 200 -
+2025-06-27 20:56:27,738 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:27,738 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:27,738 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:27] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_qkN&sid=YnOn4wG-rtn5asYXAAAC HTTP/1.1[0m" 400 -
+2025-06-27 20:56:27,739 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:27] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=YnOn4wG-rtn5asYXAAAC HTTP/1.1[0m" 400 -
+2025-06-27 20:56:27,744 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:27,744 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:27] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_qkU&sid=YnOn4wG-rtn5asYXAAAC HTTP/1.1[0m" 400 -
+2025-06-27 20:56:28,733 - __main__ - INFO - CUNOIHvHhCoOgTIHAAAD: Sending packet OPEN data {'sid': 'CUNOIHvHhCoOgTIHAAAD', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:56:28,733 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:28] "GET /socket.io/?EIO=4&transport=polling&t=PUn_qzv HTTP/1.1" 200 -
+2025-06-27 20:56:28,740 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:28,740 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:28,741 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:28] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_q-1&sid=CUNOIHvHhCoOgTIHAAAD HTTP/1.1[0m" 400 -
+2025-06-27 20:56:28,741 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:28] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=CUNOIHvHhCoOgTIHAAAD HTTP/1.1[0m" 400 -
+2025-06-27 20:56:28,746 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:28,746 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:28] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_q-8&sid=CUNOIHvHhCoOgTIHAAAD HTTP/1.1[0m" 400 -
+2025-06-27 20:56:30,731 - __main__ - INFO - LadLwyeiwtk_inBsAAAE: Sending packet OPEN data {'sid': 'LadLwyeiwtk_inBsAAAE', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:56:30,731 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:30] "GET /socket.io/?EIO=4&transport=polling&t=PUn_rT9 HTTP/1.1" 200 -
+2025-06-27 20:56:30,736 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:30,737 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:30] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_rTE&sid=LadLwyeiwtk_inBsAAAE HTTP/1.1[0m" 400 -
+2025-06-27 20:56:30,738 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:30,738 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:30] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=LadLwyeiwtk_inBsAAAE HTTP/1.1[0m" 400 -
+2025-06-27 20:56:30,742 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:30,742 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:30] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_rTK&sid=LadLwyeiwtk_inBsAAAE HTTP/1.1[0m" 400 -
+2025-06-27 20:56:31,733 - __main__ - INFO - UhZfm9dLFedN4zsiAAAF: Sending packet OPEN data {'sid': 'UhZfm9dLFedN4zsiAAAF', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:56:31,733 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:31] "GET /socket.io/?EIO=4&transport=polling&t=PUn_rin HTTP/1.1" 200 -
+2025-06-27 20:56:31,739 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:31,739 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:31] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_riv&sid=UhZfm9dLFedN4zsiAAAF HTTP/1.1[0m" 400 -
+2025-06-27 20:56:31,742 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:56:31,743 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:31] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=UhZfm9dLFedN4zsiAAAF HTTP/1.1[0m" 400 -
+2025-06-27 20:56:42,096 - __main__ - INFO - Server initialized for threading.
+2025-06-27 20:56:42,102 - __main__ - INFO - Successfully connected to MongoDB collections
+2025-06-27 20:56:42,105 - __main__ - INFO - TTL indexes created successfully
+2025-06-27 20:56:42,110 - __main__ - INFO - Starting Secure Chat Application on 0.0.0.0:5000
+2025-06-27 20:56:42,110 - __main__ - INFO - Debug mode: True
+2025-06-27 20:56:42,110 - __main__ - INFO - Upload folder: static/uploads
+2025-06-27 20:56:42,110 - __main__ - INFO - Max file size: 3.0MB
+2025-06-27 20:56:42,118 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.100:5000
+2025-06-27 20:56:42,118 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-27 20:56:45,457 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:45] "[32mGET / HTTP/1.1[0m" 302 -
+2025-06-27 20:56:45,464 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:45] "GET /auth HTTP/1.1" 200 -
+2025-06-27 20:56:55,185 - __main__ - INFO - Password reset for user: paras
+2025-06-27 20:56:55,186 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:56:55] "POST /forgot HTTP/1.1" 200 -
+2025-06-27 20:57:00,403 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:00] "[31m[1mPOST /login HTTP/1.1[0m" 401 -
+2025-06-27 20:57:04,731 - __main__ - INFO - User logged in: paras
+2025-06-27 20:57:04,732 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:04] "POST /login HTTP/1.1" 200 -
+2025-06-27 20:57:06,256 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "GET / HTTP/1.1" 200 -
+2025-06-27 20:57:06,304 - __main__ - INFO - lR0-Qu4LqJX_Tf6JAAAA: Sending packet OPEN data {'sid': 'lR0-Qu4LqJX_Tf6JAAAA', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:57:06,304 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "GET /socket.io/?EIO=4&transport=polling&t=PUn_-8z HTTP/1.1" 200 -
+2025-06-27 20:57:06,310 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "GET /profile HTTP/1.1" 200 -
+2025-06-27 20:57:06,311 - __main__ - ERROR - http://127.0.0.1:5000 is not an accepted origin. (further occurrences of this error will be logged with level INFO)
+2025-06-27 20:57:06,312 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-94&sid=lR0-Qu4LqJX_Tf6JAAAA HTTP/1.1[0m" 400 -
+2025-06-27 20:57:06,312 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:06,313 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=lR0-Qu4LqJX_Tf6JAAAA HTTP/1.1[0m" 400 -
+2025-06-27 20:57:06,314 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "GET /contacts HTTP/1.1" 200 -
+2025-06-27 20:57:06,317 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:06,318 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-9B&sid=lR0-Qu4LqJX_Tf6JAAAA HTTP/1.1[0m" 400 -
+2025-06-27 20:57:06,321 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:06] "[36mGET /static/uploads/0d550c38-a7c6-44db-a298-c0e6a7c6a4dd.webp HTTP/1.1[0m" 304 -
+2025-06-27 20:57:07,014 - __main__ - INFO - FhZSVikHax410RXnAAAB: Sending packet OPEN data {'sid': 'FhZSVikHax410RXnAAAB', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:57:07,014 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:07] "GET /socket.io/?EIO=4&transport=polling&t=PUn_-K4 HTTP/1.1" 200 -
+2025-06-27 20:57:07,020 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:07,020 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:07] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-K9&sid=FhZSVikHax410RXnAAAB HTTP/1.1[0m" 400 -
+2025-06-27 20:57:07,020 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:07,021 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:07] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=FhZSVikHax410RXnAAAB HTTP/1.1[0m" 400 -
+2025-06-27 20:57:07,025 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:07,026 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:07] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-KG&sid=FhZSVikHax410RXnAAAB HTTP/1.1[0m" 400 -
+2025-06-27 20:57:08,018 - __main__ - INFO - Z3dxulCeUjIC2ypUAAAC: Sending packet OPEN data {'sid': 'Z3dxulCeUjIC2ypUAAAC', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:57:08,018 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "GET /socket.io/?EIO=4&transport=polling&t=PUn_-Zl HTTP/1.1" 200 -
+2025-06-27 20:57:08,024 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:08,024 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:08,024 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-Zr&sid=Z3dxulCeUjIC2ypUAAAC HTTP/1.1[0m" 400 -
+2025-06-27 20:57:08,025 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=Z3dxulCeUjIC2ypUAAAC HTTP/1.1[0m" 400 -
+2025-06-27 20:57:08,029 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:08,029 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-Zx&sid=Z3dxulCeUjIC2ypUAAAC HTTP/1.1[0m" 400 -
+2025-06-27 20:57:08,613 - __main__ - INFO - 6aNO_adk1sKHGayXAAAD: Sending packet OPEN data {'sid': '6aNO_adk1sKHGayXAAAD', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:57:08,614 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "GET /socket.io/?EIO=4&transport=polling&t=PUn_-j3 HTTP/1.1" 200 -
+2025-06-27 20:57:08,619 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:08,620 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:08,620 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-j8&sid=6aNO_adk1sKHGayXAAAD HTTP/1.1[0m" 400 -
+2025-06-27 20:57:08,620 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=6aNO_adk1sKHGayXAAAD HTTP/1.1[0m" 400 -
+2025-06-27 20:57:08,625 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:08,625 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:08] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-jF&sid=6aNO_adk1sKHGayXAAAD HTTP/1.1[0m" 400 -
+2025-06-27 20:57:09,625 - __main__ - INFO - I5IE3K5A-yaEX-e9AAAE: Sending packet OPEN data {'sid': 'I5IE3K5A-yaEX-e9AAAE', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:57:09,625 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:09] "GET /socket.io/?EIO=4&transport=polling&t=PUn_-ys HTTP/1.1" 200 -
+2025-06-27 20:57:09,630 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:09,631 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:09,631 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:09] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-yy&sid=I5IE3K5A-yaEX-e9AAAE HTTP/1.1[0m" 400 -
+2025-06-27 20:57:09,631 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:09] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=I5IE3K5A-yaEX-e9AAAE HTTP/1.1[0m" 400 -
+2025-06-27 20:57:09,635 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:09,635 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:09] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn_-z2&sid=I5IE3K5A-yaEX-e9AAAE HTTP/1.1[0m" 400 -
+2025-06-27 20:57:11,025 - __main__ - INFO - srgeUgM5cT715k31AAAF: Sending packet OPEN data {'sid': 'srgeUgM5cT715k31AAAF', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:57:11,025 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:11] "GET /socket.io/?EIO=4&transport=polling&t=PUn__Ik HTTP/1.1" 200 -
+2025-06-27 20:57:11,030 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:11,030 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:11] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn__Iq&sid=srgeUgM5cT715k31AAAF HTTP/1.1[0m" 400 -
+2025-06-27 20:57:11,034 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:11,034 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:11] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=srgeUgM5cT715k31AAAF HTTP/1.1[0m" 400 -
+2025-06-27 20:57:31,305 - __main__ - INFO - lR0-Qu4LqJX_Tf6JAAAA: Sending packet PING data None
+2025-06-27 20:57:31,305 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "GET /socket.io/?EIO=4&transport=polling&t=PUn_-94.0&sid=lR0-Qu4LqJX_Tf6JAAAA HTTP/1.1" 200 -
+2025-06-27 20:57:31,308 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:31,309 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUn__Iu&sid=srgeUgM5cT715k31AAAF HTTP/1.1[0m" 400 -
+2025-06-27 20:57:31,310 - __main__ - INFO - 4Nd-Sto8znMBKafPAAAG: Sending packet OPEN data {'sid': '4Nd-Sto8znMBKafPAAAG', 'upgrades': ['websocket'], 'pingTimeout': 20000, 'pingInterval': 25000, 'maxPayload': 1000000}
+2025-06-27 20:57:31,311 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "GET /socket.io/?EIO=4&transport=polling&t=PUn__YI HTTP/1.1" 200 -
+2025-06-27 20:57:31,314 - __main__ - INFO - Status updated for user paras: online
+2025-06-27 20:57:31,314 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 20:57:31,317 - __main__ - INFO - Status updated for user paras: online
+2025-06-27 20:57:31,318 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 20:57:31,318 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:31,318 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=4Nd-Sto8znMBKafPAAAG HTTP/1.1[0m" 400 -
+2025-06-27 20:57:31,320 - __main__ - INFO - Status updated for user paras: online
+2025-06-27 20:57:31,320 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 20:57:31,323 - __main__ - INFO - Status updated for user paras: online
+2025-06-27 20:57:31,323 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 20:57:31,325 - __main__ - INFO - http://127.0.0.1:5000 is not an accepted origin.
+2025-06-27 20:57:31,325 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:31] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUo04Fn&sid=4Nd-Sto8znMBKafPAAAG HTTP/1.1[0m" 400 -
+2025-06-27 20:57:32,014 - __main__ - INFO - FhZSVikHax410RXnAAAB: Sending packet PING data None
+2025-06-27 20:57:32,015 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 20:57:32] "GET /socket.io/?EIO=4&transport=polling&t=PUn_-KA&sid=FhZSVikHax410RXnAAAB HTTP/1.1" 200 -
+2025-06-27 21:03:02,104 - __main__ - INFO - Successfully connected to MongoDB collections
+2025-06-27 21:03:02,108 - __main__ - INFO - TTL indexes created successfully
+2025-06-27 21:03:02,115 - __main__ - INFO - Starting Secure Chat Application on 0.0.0.0:5000
+2025-06-27 21:03:02,115 - __main__ - INFO - Debug mode: False
+2025-06-27 21:03:02,115 - __main__ - INFO - Upload folder: static/uploads
+2025-06-27 21:03:02,115 - __main__ - INFO - Max file size: 3.0MB
+2025-06-27 21:03:02,120 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.100:5000
+2025-06-27 21:03:02,120 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-27 21:03:06,630 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:06] "[32mGET / HTTP/1.1[0m" 302 -
+2025-06-27 21:03:06,638 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:06] "GET /auth HTTP/1.1" 200 -
+2025-06-27 21:03:12,567 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:12] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-06-27 21:03:13,647 - __main__ - INFO - User logged in: paras
+2025-06-27 21:03:13,648 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:13] "POST /login HTTP/1.1" 200 -
+2025-06-27 21:03:15,168 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "GET / HTTP/1.1" 200 -
+2025-06-27 21:03:15,184 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-06-27 21:03:15,373 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "GET /socket.io/?EIO=4&transport=polling&t=PUo1OFg HTTP/1.1" 200 -
+2025-06-27 21:03:15,383 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "GET /profile HTTP/1.1" 200 -
+2025-06-27 21:03:15,384 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "POST /socket.io/?EIO=4&transport=polling&t=PUo1OFq&sid=4ymVqgGyVjrRbM7xAAAA HTTP/1.1" 200 -
+2025-06-27 21:03:15,386 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "GET /socket.io/?EIO=4&transport=polling&t=PUo1OFr&sid=4ymVqgGyVjrRbM7xAAAA HTTP/1.1" 200 -
+2025-06-27 21:03:15,388 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "GET /contacts HTTP/1.1" 200 -
+2025-06-27 21:03:15,394 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "GET /socket.io/?EIO=4&transport=polling&t=PUo1OF_&sid=4ymVqgGyVjrRbM7xAAAA HTTP/1.1" 200 -
+2025-06-27 21:03:15,398 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "POST /socket.io/?EIO=4&transport=polling&t=PUo1OG0&sid=4ymVqgGyVjrRbM7xAAAA HTTP/1.1" 200 -
+2025-06-27 21:03:15,399 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:15] "[36mGET /static/uploads/0d550c38-a7c6-44db-a298-c0e6a7c6a4dd.webp HTTP/1.1[0m" 304 -
+2025-06-27 21:03:19,194 - __main__ - INFO - Status updated for user paras: offline
+2025-06-27 21:03:19,194 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:19] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 21:03:19,755 - __main__ - INFO - Status updated for user paras: online
+2025-06-27 21:03:19,756 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:19] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 21:03:21,329 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:21] "GET /profile_page HTTP/1.1" 200 -
+2025-06-27 21:03:21,345 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:21] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-06-27 21:03:21,430 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:21] "GET /socket.io/?EIO=4&transport=websocket&sid=4ymVqgGyVjrRbM7xAAAA HTTP/1.1" 200 -
+2025-06-27 21:03:21,535 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:21] "GET /profile HTTP/1.1" 200 -
+2025-06-27 21:03:21,541 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:21] "[36mGET /static/uploads/0d550c38-a7c6-44db-a298-c0e6a7c6a4dd.webp HTTP/1.1[0m" 304 -
+2025-06-27 21:03:38,605 - __main__ - INFO - Deleted old avatar: /home/paras/Desktop/Projects/play/static/uploads/0d550c38-a7c6-44db-a298-c0e6a7c6a4dd.webp
+2025-06-27 21:03:38,605 - __main__ - INFO - Avatar saved for user paras: paras_9da1bb02ae7f468785a65bca70b5f84b.webp
+2025-06-27 21:03:38,606 - __main__ - INFO - Profile updated for user: paras
+2025-06-27 21:03:38,606 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:38] "POST /update_profile HTTP/1.1" 200 -
+2025-06-27 21:03:38,635 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:38] "GET /profile HTTP/1.1" 200 -
+2025-06-27 21:03:38,641 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:38] "GET /static/uploads/paras_9da1bb02ae7f468785a65bca70b5f84b.webp HTTP/1.1" 200 -
+2025-06-27 21:03:41,950 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:41] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-06-27 21:03:42,038 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:42] "GET /socket.io/?EIO=4&transport=polling&t=PUo1UmK HTTP/1.1" 200 -
+2025-06-27 21:03:42,133 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:42] "GET /profile HTTP/1.1" 200 -
+2025-06-27 21:03:42,134 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:42] "GET /contacts HTTP/1.1" 200 -
+2025-06-27 21:03:42,137 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:42] "POST /socket.io/?EIO=4&transport=polling&t=PUo1Uno&sid=HZvYNmae02s4LR9_AAAC HTTP/1.1" 200 -
+2025-06-27 21:03:42,142 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:42] "GET /socket.io/?EIO=4&transport=polling&t=PUo1Unp&sid=HZvYNmae02s4LR9_AAAC HTTP/1.1" 200 -
+2025-06-27 21:03:42,146 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:42] "[36mGET /static/uploads/paras_9da1bb02ae7f468785a65bca70b5f84b.webp HTTP/1.1[0m" 304 -
+2025-06-27 21:03:45,342 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:03:45] "GET /public_key/gendu HTTP/1.1" 200 -
+2025-06-27 21:04:01,049 - __main__ - INFO - Share link generated for user: paras
+2025-06-27 21:04:01,050 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:01] "POST /generate_share_link HTTP/1.1" 200 -
+2025-06-27 21:04:13,568 - __main__ - INFO - Status updated for user paras: online
+2025-06-27 21:04:13,568 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:13] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 21:04:15,075 - __main__ - INFO - Status updated for user paras: offline
+2025-06-27 21:04:15,075 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:15] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 21:04:15,756 - __main__ - INFO - Status updated for user paras: online
+2025-06-27 21:04:15,757 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:15] "POST /update_status HTTP/1.1" 200 -
+2025-06-27 21:04:16,758 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:16] "GET /profile_page HTTP/1.1" 200 -
+2025-06-27 21:04:16,776 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:16] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-06-27 21:04:16,851 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:16] "GET /socket.io/?EIO=4&transport=websocket&sid=HZvYNmae02s4LR9_AAAC HTTP/1.1" 200 -
+2025-06-27 21:04:16,936 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:16] "GET /profile HTTP/1.1" 200 -
+2025-06-27 21:04:16,945 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:16] "[36mGET /static/uploads/paras_9da1bb02ae7f468785a65bca70b5f84b.webp HTTP/1.1[0m" 304 -
+2025-06-27 21:04:21,242 - __main__ - INFO - Profile updated for user: paras
+2025-06-27 21:04:21,243 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:21] "POST /update_profile HTTP/1.1" 200 -
+2025-06-27 21:04:21,250 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:21] "GET /profile HTTP/1.1" 200 -
+2025-06-27 21:04:22,132 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-06-27 21:04:22,221 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "GET /socket.io/?EIO=4&transport=polling&t=PUo1ea9 HTTP/1.1" 200 -
+2025-06-27 21:04:22,314 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "GET /profile HTTP/1.1" 200 -
+2025-06-27 21:04:22,315 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "POST /socket.io/?EIO=4&transport=polling&t=PUo1ebd&sid=1l0rk6ER_QDkTK1zAAAE HTTP/1.1" 200 -
+2025-06-27 21:04:22,315 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "GET /socket.io/?EIO=4&transport=polling&t=PUo1ebe&sid=1l0rk6ER_QDkTK1zAAAE HTTP/1.1" 200 -
+2025-06-27 21:04:22,316 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "GET /contacts HTTP/1.1" 200 -
+2025-06-27 21:04:22,326 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "[36mGET /static/uploads/paras_9da1bb02ae7f468785a65bca70b5f84b.webp HTTP/1.1[0m" 304 -
+2025-06-27 21:04:22,329 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "GET /socket.io/?EIO=4&transport=polling&t=PUo1ebr&sid=1l0rk6ER_QDkTK1zAAAE HTTP/1.1" 200 -
+2025-06-27 21:04:22,331 - werkzeug - INFO - 127.0.0.1 - - [27/Jun/2025 21:04:22] "POST /socket.io/?EIO=4&transport=polling&t=PUo1ebs&sid=1l0rk6ER_QDkTK1zAAAE HTTP/1.1" 200 -

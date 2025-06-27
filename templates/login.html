@@ -1,10 +1,503 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Login - Secure Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Tailwind CSS & Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass {
+            background: rgba(24, 24, 27, 0.3);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 2rem;
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 8px 32px 0 rgba(31, 38, 135, 0.37),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .auth-container {
+            max-width: 450px;
+            width: 100%;
+            padding: 3rem;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(40, 40, 48, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: rgba(60, 60, 70, 0.9);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #667eea;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 1rem;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .auth-btn:active {
+            transform: translateY(0);
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .auth-link a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .auth-link a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .success-message {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #86efac;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-icon {
+            font-size: 4rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .auth-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Floating particles animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
+        }
+    </style>
 </head>
-<body>
-$END$
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="glass auth-container">
+        <div class="brand-logo">
+            <div class="brand-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+        </div>
+
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Sign in to your secure chat account</p>
+        </div>
+
+        <form id="loginForm" autocomplete="off">
+            <div class="form-group">
+                <i class="fas fa-user form-icon"></i>
+                <input class="form-input" type="text" id="username" placeholder="Username" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock form-icon"></i>
+                <input class="form-input" type="password" id="password" placeholder="Password" required>
+                <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
+            </div>
+
+            <button class="auth-btn" type="submit" id="loginBtn">
+                <span id="loginText">Sign In</span>
+                <div class="loading-spinner" id="loginSpinner" style="display: none;"></div>
+            </button>
+        </form>
+
+        <div class="auth-link">
+            <p class="text-gray-400">Don't have an account?
+                <a href="/register_page">Create Account</a>
+            </p>
+        </div>
+
+        <div class="auth-link">
+            <a href="#" id="forgotPassword" class="text-sm">Forgot Password?</a>
+        </div>
+
+        <div id="loginError" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span></span>
+        </div>
+
+        <div id="loginSuccess" class="success-message" style="display: none;">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span></span>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Password toggle functionality
+        $("#passwordToggle").on("click", function() {
+            const passwordInput = $("#password");
+            const icon = $(this);
+
+            if (passwordInput.attr("type") === "password") {
+                passwordInput.attr("type", "text");
+                icon.removeClass("fa-eye").addClass("fa-eye-slash");
+            } else {
+                passwordInput.attr("type", "password");
+                icon.removeClass("fa-eye-slash").addClass("fa-eye");
+            }
+        });
+
+        // Form submission
+        $("#loginForm").on("submit", function(e) {
+            e.preventDefault();
+
+            const username = $("#username").val().trim();
+            const password = $("#password").val();
+
+            if (!username || !password) {
+                showError("Please fill in all fields");
+                return;
+            }
+
+            // Show loading state
+            $("#loginBtn").prop("disabled", true);
+            $("#loginText").text("Signing In...");
+            $("#loginSpinner").show();
+            $("#loginError").hide();
+
+            $.ajax({
+                url: "/login",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    username: username,
+                    password: password
+                }),
+                success: function(resp) {
+                    showSuccess("Login successful! Redirecting...");
+                    setTimeout(function() {
+                        window.location = "/";
+                    }, 1500);
+                },
+                error: function(xhr) {
+                    let msg = "Login failed. Please try again.";
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        msg = xhr.responseJSON.error;
+                    }
+                    showError(msg);
+                },
+                complete: function() {
+                    // Reset loading state
+                    $("#loginBtn").prop("disabled", false);
+                    $("#loginText").text("Sign In");
+                    $("#loginSpinner").hide();
+                }
+            });
+        });
+
+        // Show error message
+        function showError(message) {
+            $("#loginError span").text(message);
+            $("#loginError").show();
+            $("#loginSuccess").hide();
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            $("#loginSuccess span").text(message);
+            $("#loginSuccess").show();
+            $("#loginError").hide();
+        }
+
+        // Forgot password functionality
+        $("#forgotPassword").on("click", function(e) {
+            e.preventDefault();
+            const username = prompt("Enter your username to reset password:");
+            if (username) {
+                const newPassword = prompt("Enter your new password:");
+                if (newPassword) {
+                    $.ajax({
+                        url: "/forgot",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            username: username,
+                            new_password: newPassword
+                        }),
+                        success: function(resp) {
+                            showSuccess("Password reset successful!");
+                        },
+                        error: function(xhr) {
+                            let msg = "Password reset failed.";
+                            if (xhr.responseJSON && xhr.responseJSON.error) {
+                                msg = xhr.responseJSON.error;
+                            }
+                            showError(msg);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Initialize particles on load
+        $(document).ready(function() {
+            createParticles();
+        });
+
+        // Add enter key support for form fields
+        $(".form-input").on("keypress", function(e) {
+            if (e.which === 13) {
+                $("#loginForm").submit();
+            }
+        });
+    </script>
 </body>
 </html>

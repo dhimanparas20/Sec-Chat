@@ -1,10 +1,3302 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Secure Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Tailwind CSS & Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --vanish-gradient: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --sidebar-width: 320px;
+            --sidebar-collapsed: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body.vanish-mode {
+            background: #000000;
+            animation: none;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass {
+            background: rgba(24, 24, 27, 0.3);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 2rem;
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 8px 32px 0 rgba(31, 38, 135, 0.37),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass.vanish-mode {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .sidebar {
+            background: rgba(30, 30, 40, 0.9);
+            backdrop-filter: blur(16px);
+            border-radius: 2rem 0 0 2rem;
+            width: var(--sidebar-width);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar.vanish-mode {
+            background: transparent;
+            border-right: 2px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed);
+        }
+
+        .sidebar.collapsed .sidebar-content {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar.collapsed .hamburger {
+            transform: rotate(180deg);
+        }
+
+        .hamburger {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            z-index: 10;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hamburger.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .hamburger:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-content {
+            padding: 3rem 1rem 1rem 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-section {
+            background: rgba(40, 40, 48, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .profile-section.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-avatar.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-username {
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-status {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Enhanced Online Status Indicators */
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 0.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .status-indicator.online {
+            background: #4ade80;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+        }
+
+        .status-indicator.offline {
+            background: #6b7280;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .profile-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .profile-btn.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .vanish-toggle {
+            background: rgba(40, 40, 48, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .vanish-toggle.active {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-slider.active {
+            transform: translateX(26px);
+            background: #ff6b6b;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar input {
+            background: rgba(40, 40, 48, 0.8);
+            color: #fff;
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 0.75rem 3rem 0.75rem 2.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            background: rgba(60, 60, 70, 0.9);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-bar input.vanish-mode:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .search-icon.vanish-mode {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .search-clear.vanish-mode {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-clear:hover {
+            color: #fff;
+        }
+
+        .search-loading {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+
+        .search-loading.vanish-mode {
+            color: white;
+        }
+
+        @keyframes spin {
+            from { transform: translateY(-50%) rotate(0deg); }
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        .user-not-found {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .user-not-found.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+        }
+
+        .search-results {
+            background: rgba(40, 40, 48, 0.9);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            margin-top: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            animation: slideDown 0.3s ease;
+        }
+
+        .search-results.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        .search-result-item.vanish-mode:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-result-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            overflow: hidden;
+        }
+
+        .search-result-avatar.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .search-result-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .search-result-details {
+            color: #fff;
+        }
+
+        .search-result-username {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .search-result-fullname {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .user-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .user-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .user-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .contact {
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            cursor: pointer;
+            background: rgba(40, 40, 48, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .contact.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .contact:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: translateX(5px);
+        }
+
+        .contact.vanish-mode:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .contact.active {
+            background: var(--primary-gradient);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .contact.active.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .contact-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .contact-avatar.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Enhanced Online Status for Contacts */
+        .contact-online-indicator {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(30, 30, 40, 0.9);
+        }
+
+        .contact-online-indicator.vanish-mode {
+            border-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .contact-online-indicator.online {
+            background: #4ade80;
+            box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        .contact-online-indicator.offline {
+            background: #6b7280;
+        }
+
+        .contact-details {
+            flex: 1;
+        }
+
+        .contact-username {
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-name {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-last-message {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.25rem;
+        }
+
+        .contact-badges {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-direction: column;
+        }
+
+        .contact-time {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-badge {
+            background: var(--danger-gradient);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            font-size: 0.7rem;
+            color: #4ade80;
+            font-style: italic;
+            display: none;
+        }
+
+        .typing-indicator.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .contact-actions {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact:hover .contact-actions {
+            opacity: 1;
+        }
+
+        .contact-delete {
+            background: var(--danger-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact-delete.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .contact-delete:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .logout-btn {
+            background: var(--danger-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 1rem;
+            padding: 0.75rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn.vanish-mode {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4);
+        }
+
+        .logout-btn.vanish-mode:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .logout-btn:hover::before {
+            left: 100%;
+        }
+
+        .logout-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .logout-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        .logout-spinner.show {
+            display: inline-block;
+        }
+
+        .chat-main {
+            background: rgba(24, 24, 27, 0.4);
+            backdrop-filter: blur(16px);
+            border-radius: 0 2rem 2rem 0;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            flex: 1;
+            position: relative;
+        }
+
+        .chat-main.vanish-mode {
+            background: transparent;
+            border-left: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.25rem;
+            background: var(--primary-gradient);
+            border-radius: 0 2rem 0 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header.vanish-mode {
+            background: transparent;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .chat-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        .chat-header.vanish-mode::before {
+            display: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .chat-user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-avatar.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Enhanced Chat Header Online Status */
+        .chat-online-indicator {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(102, 126, 234, 1);
+        }
+
+        .chat-online-indicator.vanish-mode {
+            border-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .chat-online-indicator.online {
+            background: #4ade80;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        .chat-online-indicator.offline {
+            background: #6b7280;
+        }
+
+        .chat-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-username {
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-fullname {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Chat Status Indicators */
+        .chat-status {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-status .status-indicator {
+            width: 10px;
+            height: 10px;
+            margin-right: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .chat-typing {
+            color: #4ade80;
+            font-style: italic;
+            display: none;
+        }
+
+        .chat-typing.show {
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .chat-seen {
+            color: #60a5fa;
+            font-size: 0.75rem;
+            display: none;
+        }
+
+        .chat-seen.show {
+            display: block;
+        }
+
+        .chat-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chat-delete-btn {
+            background: rgba(248, 113, 113, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.5);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: #fca5a5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .chat-delete-btn.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .chat-delete-btn:hover {
+            background: rgba(248, 113, 113, 0.3);
+            transform: scale(1.05);
+        }
+
+        .chat-delete-btn.vanish-mode:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .vanish-indicator {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .vanish-indicator i {
+            margin-right: 0.5rem;
+            animation: vanishPulse 2s infinite;
+        }
+
+        @keyframes vanishPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, rgba(24, 24, 27, 0.4) 0%, rgba(35, 35, 77, 0.4) 100%);
+        }
+
+        .chat-list.vanish-mode {
+            background: transparent;
+        }
+
+        .chat-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .chat-bubble {
+            background: rgba(40, 40, 48, 0.8);
+            color: #fff;
+            border-radius: 1.5rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            max-width: 70%;
+            word-break: break-word;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: messageSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-bubble.me {
+            background: var(--primary-gradient);
+            align-self: flex-end;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        .chat-bubble.me.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .chat-bubble.other {
+            background: rgba(30, 30, 30, 0.8);
+            align-self: flex-start;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .chat-bubble.other.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+        }
+
+        .chat-bubble.vanish-mode::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3));
+            border-radius: inherit;
+            z-index: -1;
+            animation: vanishGlow 2s linear infinite;
+        }
+
+        /* Message Status Indicators */
+        .message-status {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .message-status.other {
+            justify-content: flex-start;
+        }
+
+        .message-status i {
+            margin-left: 0.25rem;
+        }
+
+        .message-status.seen {
+            color: #60a5fa;
+        }
+
+        .message-status.delivered {
+            color: #4ade80;
+        }
+
+        .message-status.pending {
+            color: #fbbf24;
+        }
+
+        @keyframes vanishGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .chat-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(16px);
+            border-radius: 0 0 2rem 2rem;
+        }
+
+        .chat-footer.vanish-mode {
+            background: transparent;
+            border-top: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .message-form {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .message-input {
+            flex: 1;
+            background: rgba(40, 40, 48, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            padding: 0.75rem 1.25rem;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .message-input.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: white;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: rgba(60, 60, 70, 0.9);
+        }
+
+        .message-input.vanish-mode:focus {
+            border-color: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .send-btn {
+            background: var(--success-gradient);
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .send-btn.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .send-btn.vanish-mode:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: rgba(24, 24, 27, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: toastSlide 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 4px solid #4ade80;
+        }
+
+        .toast.error {
+            border-left: 4px solid #f87171;
+        }
+
+        .toast.info {
+            border-left: 4px solid #60a5fa;
+        }
+
+        .toast.vanish {
+            border-left: 4px solid #ff6b6b;
+            background: rgba(255, 107, 107, 0.2);
+        }
+
+        @keyframes toastSlide {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .toast-close:hover {
+            color: #fff;
+        }
+
+        /* Share Modal Styles */
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .share-modal.show {
+            display: flex;
+        }
+
+        .share-modal-content {
+            background: rgba(24, 24, 27, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            color: white;
+            position: relative;
+            animation: modalSlide 0.3s ease;
+        }
+
+        .share-modal-content.vanish-mode {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .share-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .share-modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .share-modal-title i {
+            margin-right: 0.5rem;
+            color: #667eea;
+        }
+
+        .share-modal-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .share-modal-close:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .share-url-container {
+            background: rgba(40, 40, 48, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .share-url-container.vanish-mode {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .share-url-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: var(--success-gradient);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: var(--success-gradient);
+        }
+
+        .share-instructions {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .share-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .share-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-action-btn.vanish-mode {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .share-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .glass {
+                margin: 0.5rem;
+                border-radius: 1rem;
+                flex-direction: column;
+                height: calc(100vh - 1rem);
+                max-width: none;
+                width: calc(100% - 1rem);
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-radius: 1rem 1rem 0 0;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+                max-height: 40vh;
+                min-height: 200px;
+            }
+
+            .sidebar.collapsed {
+                height: 60px;
+                max-height: 60px;
+                min-height: 60px;
+            }
+
+            .chat-main {
+                border-radius: 0 0 1rem 1rem;
+                flex: 1;
+                height: auto;
+                min-height: 0;
+            }
+
+            .chat-header {
+                border-radius: 0;
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .chat-bubble {
+                max-width: 90%;
+                padding: 0.75rem 1rem;
+            }
+
+            .sidebar-content {
+                padding: 3rem 0.75rem 0.75rem 0.75rem;
+            }
+
+            .profile-section {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .vanish-toggle {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .search-bar input {
+                padding: 0.5rem 2.5rem 0.5rem 2rem;
+            }
+
+            .contact {
+                padding: 0.5rem 0.75rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .contact-avatar {
+                width: 28px;
+                height: 28px;
+                margin-right: 0.5rem;
+            }
+
+            .profile-avatar {
+                width: 28px;
+                height: 28px;
+                margin-right: 0.5rem;
+            }
+
+            .chat-avatar {
+                width: 32px;
+                height: 32px;
+                margin-right: 0.75rem;
+            }
+
+            .message-form {
+                gap: 0.5rem;
+            }
+
+            .message-input {
+                padding: 0.5rem 1rem;
+            }
+
+            .send-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .chat-list {
+                padding: 0.75rem;
+            }
+
+            .chat-footer {
+                padding: 1rem;
+            }
+
+            .toast-container {
+                top: 1rem;
+                right: 0.5rem;
+                left: 0.5rem;
+            }
+
+            .toast {
+                min-width: auto;
+            }
+
+            .share-modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glass {
+                margin: 0.25rem;
+                height: calc(100vh - 0.5rem);
+                width: calc(100% - 0.5rem);
+            }
+
+            .sidebar {
+                max-height: 35vh;
+            }
+
+            .chat-header {
+                padding: 0.75rem;
+            }
+
+            .chat-username {
+                font-size: 1rem;
+            }
+
+            .chat-fullname {
+                font-size: 0.8rem;
+            }
+
+            .profile-username {
+                font-size: 0.8rem;
+            }
+
+            .contact-username {
+                font-size: 0.8rem;
+            }
+
+            .contact-name {
+                font-size: 0.7rem;
+            }
+
+            .search-bar input {
+                font-size: 0.9rem;
+            }
+
+            .message-input {
+                font-size: 0.9rem;
+            }
+
+            .chat-bubble {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+    </style>
 </head>
-<body>
-$END$
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content" id="shareModalContent">
+            <div class="share-modal-header">
+                <div class="share-modal-title">
+                    <i class="fas fa-share-alt"></i>
+                    Share Chat Link
+                </div>
+                <button class="share-modal-close" id="shareModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="share-instructions">
+                Share this link with anyone to start a direct chat with you. When they click the link, they'll be taken directly to your chat (after logging in if needed).
+            </div>
+
+            <div class="share-url-container" id="shareUrlContainer">
+                <input type="text" class="share-url-input" id="shareUrlInput" readonly>
+                <button class="copy-btn" id="copyBtn">
+                    <i class="fas fa-copy"></i>
+                    <span id="copyBtnText">Copy</span>
+                </button>
+            </div>
+
+            <div class="share-actions">
+                <button class="share-action-btn" id="shareWhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp
+                </button>
+                <button class="share-action-btn" id="shareTelegram">
+                    <i class="fab fa-telegram"></i>
+                    Telegram
+                </button>
+                <button class="share-action-btn" id="shareEmail">
+                    <i class="fas fa-envelope"></i>
+                    Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass flex w-full max-w-6xl mx-auto shadow-2xl" id="mainContainer">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <button class="hamburger" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="sidebar-content">
+                <!-- Profile Section -->
+                <div class="profile-section" id="profileSection">
+                    <div class="profile-info">
+                        <div class="profile-avatar" id="currentUserAvatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-details">
+                            <div class="profile-username" id="currentUsername">
+                                <span id="currentUsernameText"></span>
+                                <div class="status-indicator online" id="currentStatus"></div>
+                            </div>
+                            <div class="profile-status">
+                                <span id="currentStatusText">Online</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="profile-btn" onclick="openShareModal()" title="Share Chat Link" id="shareBtn">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <a href="/profile_page" class="profile-btn" title="Edit Profile" id="editProfileBtn">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button class="profile-btn" onclick="toggleOnlineStatus()" title="Toggle Status" id="statusToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vanish Mode Toggle -->
+                <div class="vanish-toggle" id="vanishToggle">
+                    <div class="flex items-center">
+                        <i class="fas fa-ghost mr-2"></i>
+                        <span>Vanish Mode</span>
+                    </div>
+                    <div class="toggle-switch" id="toggleSwitch">
+                        <div class="toggle-slider" id="toggleSlider"></div>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon" id="searchIcon"></i>
+                        <input id="searchUser" type="text" placeholder="Search by username or name..." autocomplete="off">
+                        <i class="fas fa-times search-clear" id="searchClear" onclick="clearSearch()"></i>
+                        <i class="fas fa-spinner search-loading" id="searchLoading" style="display: none;"></i>
+                    </div>
+                    <div id="userNotFound" class="user-not-found" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i> No users found
+                    </div>
+                    <div id="searchResults" class="search-results" style="display: none;"></div>
+                </div>
+
+                <div class="user-list" id="userList">
+                    <div class="text-center text-gray-400 py-4">
+                        <i class="fas fa-users mb-2 text-2xl"></i>
+                        <div>No contacts yet</div>
+                        <div class="text-xs">Search for users to start chatting</div>
+                    </div>
+                </div>
+
+                <button id="logoutBtn" class="logout-btn w-full">
+                    <div class="logout-spinner" id="logoutSpinner"></div>
+                    <i class="fas fa-sign-out-alt mr-2" id="logoutIcon"></i>
+                    <span id="logoutText">Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Main -->
+        <div class="chat-main" id="chatMain">
+            <div class="chat-header" id="chatWith">
+                <div class="chat-user-info">
+                    <div class="chat-avatar" id="chatAvatar">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="chat-details">
+                        <div class="chat-username">Select a user to chat</div>
+                        <div class="chat-fullname" id="chatFullName" style="display: none;"></div>
+                        <div class="chat-status" id="chatStatus">
+                            <div class="status-indicator online" id="chatStatusIndicator"></div>
+                            <span id="chatStatusText">Online</span>
+                        </div>
+                        <div class="chat-typing" id="chatTyping">
+                            <i class="fas fa-keyboard mr-1"></i>
+                            <span>typing...</span>
+                        </div>
+                        <div class="chat-seen" id="chatSeen">
+                            <i class="fas fa-eye mr-1"></i>
+                            <span>seen</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="chat-delete-btn" id="deleteChatBtn" onclick="deleteChat()" style="display: none;">
+                        <i class="fas fa-trash mr-2"></i>Delete Chat
+                    </button>
+                    <div class="vanish-indicator" id="vanishIndicator" style="display: none;">
+                        <i class="fas fa-ghost"></i>
+                        Vanish Mode Active
+                    </div>
+                </div>
+            </div>
+
+            <div id="chatHistory" class="chat-list">
+                <div class="text-center text-gray-400 py-8">
+                    <i class="fas fa-comment-dots text-4xl mb-4 opacity-50"></i>
+                    <div class="text-lg mb-2">Welcome to Secure Chat</div>
+                    <div class="text-sm">Select a contact or search for a user to start messaging</div>
+                </div>
+            </div>
+
+            <form id="sendForm" class="chat-footer">
+                <div class="message-form">
+                    <input id="messageInput" type="text" class="message-input" placeholder="Type your message..." autocomplete="off" required>
+                    <button class="send-btn" type="submit" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Socket.IO, jQuery -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        let username = "{{ username }}";
+        let chatWith = null;
+        let chatWithFullName = null;
+        let theirPublicKey = null;
+        let contacts = [];
+        let contactsData = {}; // Store full contact information
+        let unreadMessages = {};
+        let searchTimeout = null;
+        let isSearching = false;
+        let vanishMode = false;
+        let vanishMessages = {}; // Store vanish mode messages in memory only
+        let onlineUsers = new Set();
+        let userStatus = 'auto'; // auto, online, offline
+        let lastMessageTimes = {}; // Track last message times for sorting
+        let notificationSoundEnabled = true; // Notification sound setting
+        let typingUsers = new Set(); // Track who is typing
+        let typingTimeout = null;
+        let lastSeenMessages = {}; // Track last seen messages
+        let isPageVisible = true; // Track page visibility
+        let messageStatusMap = {}; // Track message delivery/seen status
+
+        // Check if we need to start a chat with a specific user (from share link)
+        const startChatWith = "{{ start_chat_with or '' }}";
+        const targetUserInfo = {{ target_user_info | tojson if target_user_info else 'null' }};
+
+        $("#currentUsernameText").text(username);
+
+        // Page visibility detection for cross-tab notifications
+        document.addEventListener('visibilitychange', function() {
+            isPageVisible = !document.hidden;
+
+            if (isPageVisible) {
+                // Mark messages as seen when page becomes visible
+                if (chatWith) {
+                    markMessagesAsSeen(chatWith);
+                }
+                // Update online status if auto mode
+                if (userStatus === 'auto') {
+                    updateOnlineStatus();
+                    socket.emit('status_change', { username: username, status: 'online' });
+                }
+            } else {
+                // Set to offline if auto mode and page hidden
+                if (userStatus === 'auto') {
+                    updateOnlineStatus();
+                    socket.emit('status_change', { username: username, status: 'offline' });
+                }
+            }
+        });
+
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // Show browser notification
+        function showBrowserNotification(title, body, icon = null) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notification = new Notification(title, {
+                    body: body,
+                    icon: icon || '/favicon.ico',
+                    badge: '/favicon.ico',
+                    tag: 'secure-chat',
+                    requireInteraction: false
+                });
+
+                // Auto close after 5 seconds
+                setTimeout(() => {
+                    notification.close();
+                }, 5000);
+
+                // Close on click
+                notification.onclick = function() {
+                    window.focus();
+                    notification.close();
+                };
+            }
+        }
+
+        // Toast notification system
+        function showToast(message, type = 'info', duration = 5000) {
+            const toastType = vanishMode && type === 'info' ? 'vanish' : type;
+            const toast = $(`
+                <div class="toast ${toastType}">
+                    <div class="flex items-center">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : vanishMode ? 'fa-ghost' : 'fa-info-circle'} mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button class="toast-close">&times;</button>
+                </div>
+            `);
+
+            $("#toastContainer").append(toast);
+
+            // Auto remove after duration
+            setTimeout(() => {
+                toast.fadeOut(300, () => toast.remove());
+            }, duration);
+
+            // Manual close
+            toast.find('.toast-close').on('click', () => {
+                toast.fadeOut(300, () => toast.remove());
+            });
+        }
+
+        // Share functionality
+        function openShareModal() {
+            generateShareLink();
+        }
+
+        function generateShareLink() {
+            $.ajax({
+                url: "/generate_share_link",
+                type: "POST",
+                contentType: "application/json",
+                success: function(resp) {
+                    if (resp.success) {
+                        $("#shareUrlInput").val(resp.share_url);
+                        $("#shareModal").addClass('show');
+
+                        // Update modal styling based on vanish mode
+                        if (vanishMode) {
+                            $("#shareModalContent").addClass('vanish-mode');
+                            $("#shareUrlContainer").addClass('vanish-mode');
+                            $("#copyBtn").addClass('vanish-mode');
+                            $(".share-action-btn").addClass('vanish-mode');
+                        } else {
+                            $("#shareModalContent").removeClass('vanish-mode');
+                            $("#shareUrlContainer").removeClass('vanish-mode');
+                            $("#copyBtn").removeClass('vanish-mode');
+                            $(".share-action-btn").removeClass('vanish-mode');
+                        }
+
+                        showToast("Share link generated successfully!", "success", 3000);
+                    } else {
+                        showToast("Failed to generate share link", "error");
+                    }
+                },
+                error: function() {
+                    showToast("Failed to generate share link", "error");
+                }
+            });
+        }
+
+        function closeShareModal() {
+            $("#shareModal").removeClass('show');
+        }
+
+        function copyShareLink() {
+            const shareUrl = $("#shareUrlInput").val();
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    $("#copyBtnText").text("Copied!");
+                    $("#copyBtn").addClass('copied');
+                    showToast("Share link copied to clipboard!", "success", 2000);
+
+                    setTimeout(() => {
+                        $("#copyBtnText").text("Copy");
+                        $("#copyBtn").removeClass('copied');
+                    }, 2000);
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(shareUrl);
+                });
+            } else {
+                fallbackCopyTextToClipboard(shareUrl);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                $("#copyBtnText").text("Copied!");
+                $("#copyBtn").addClass('copied');
+                showToast("Share link copied to clipboard!", "success", 2000);
+
+                setTimeout(() => {
+                    $("#copyBtnText").text("Copy");
+                    $("#copyBtn").removeClass('copied');
+                }, 2000);
+            } catch (err) {
+                showToast("Failed to copy link. Please copy manually.", "error");
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        function shareToWhatsApp() {
+            const shareUrl = $("#shareUrlInput").val();
+            const message = `Hey! Let's chat on SecureChat. Click this link to start a conversation with me: ${shareUrl}`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function shareToTelegram() {
+            const shareUrl = $("#shareUrlInput").val();
+            const message = `Hey! Let's chat on SecureChat. Click this link to start a conversation with me: ${shareUrl}`;
+            const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(message)}`;
+            window.open(telegramUrl, '_blank');
+        }
+
+        function shareToEmail() {
+            const shareUrl = $("#shareUrlInput").val();
+            const subject = "Let's chat on SecureChat!";
+            const body = `Hey!\n\nI'd like to chat with you on SecureChat. Click this link to start a conversation with me:\n\n${shareUrl}\n\nSee you there!`;
+            const emailUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = emailUrl;
+        }
+
+        // Event listeners for share modal
+        $("#shareModalClose").on("click", closeShareModal);
+        $("#copyBtn").on("click", copyShareLink);
+        $("#shareWhatsApp").on("click", shareToWhatsApp);
+        $("#shareTelegram").on("click", shareToTelegram);
+        $("#shareEmail").on("click", shareToEmail);
+
+        // Close modal when clicking outside
+        $("#shareModal").on("click", function(e) {
+            if (e.target === this) {
+                closeShareModal();
+            }
+        });
+
+        // Load user profile on page load
+        function loadUserProfile() {
+            $.get("/profile", function(resp) {
+                if (resp.user) {
+                    if (resp.user.avatar) {
+                        $("#currentUserAvatar").html(`<img src="${resp.user.avatar}" alt="Avatar">`);
+                    }
+                    userStatus = resp.user.status || 'auto';
+                    notificationSoundEnabled = resp.user.notification_sound !== false;
+                    updateOnlineStatus();
+                }
+            });
+        }
+
+        // Online/Offline Status Management
+        function toggleOnlineStatus() {
+            const newStatus = userStatus === 'online' ? 'offline' : 'online';
+            updateUserStatus(newStatus);
+        }
+
+        function updateUserStatus(status) {
+            $.ajax({
+                url: "/update_status",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ status: status }),
+                success: function(resp) {
+                    if (resp.success) {
+                        userStatus = status;
+                        updateOnlineStatus();
+                        socket.emit('status_change', { username: username, status: status });
+                    }
+                },
+                error: function() {
+                    showToast("Failed to update status", "error");
+                }
+            });
+        }
+
+        function updateOnlineStatus() {
+            const isOnline = userStatus === 'online' || (userStatus === 'auto' && isPageVisible);
+
+            $("#currentStatus").removeClass('online offline').addClass(isOnline ? 'online' : 'offline');
+            $("#currentStatusText").text(isOnline ? 'Online' : 'Offline');
+            $("#statusToggle i").removeClass('fa-eye fa-eye-slash').addClass(isOnline ? 'fa-eye' : 'fa-eye-slash');
+        }
+
+        // Typing indicator functions
+        function startTyping() {
+            if (chatWith && !vanishMode) {
+                socket.emit('typing_start', {
+                    to: chatWith
+                });
+            }
+        }
+
+        function stopTyping() {
+            if (chatWith && !vanishMode) {
+                socket.emit('typing_stop', {
+                    to: chatWith
+                });
+            }
+        }
+
+        // Message seen functionality
+        function markMessagesAsSeen(targetUser) {
+            if (!vanishMode && targetUser) {
+                socket.emit('messages_seen', {
+                    sender: targetUser
+                });
+
+                // Update UI to show seen status
+                $("#chatSeen").addClass('show');
+                setTimeout(() => {
+                    $("#chatSeen").removeClass('show');
+                }, 3000);
+            }
+        }
+
+        // Clear search function
+        function clearSearch() {
+            $("#searchUser").val("");
+            $("#searchClear").hide();
+            $("#searchResults").hide();
+            $("#userNotFound").hide();
+            loadContacts();
+        }
+
+        // Show/hide clear button based on input
+        $("#searchUser").on("input", function() {
+            const query = $(this).val().trim();
+            if (query.length > 0) {
+                $("#searchClear").show();
+            } else {
+                $("#searchClear").hide();
+            }
+        });
+
+        // Typing detection on message input
+        $("#messageInput").on("input", function() {
+            if (chatWith) {
+                startTyping();
+
+                // Clear previous timeout
+                if (typingTimeout) {
+                    clearTimeout(typingTimeout);
+                }
+
+                // Stop typing after 2 seconds of inactivity
+                typingTimeout = setTimeout(() => {
+                    stopTyping();
+                }, 2000);
+            }
+        });
+
+        // Stop typing when input loses focus or form is submitted
+        $("#messageInput").on("blur", function() {
+            stopTyping();
+        });
+
+        // Delete chat function
+        function deleteChat() {
+            if (!chatWith) return;
+
+            if (confirm(`Are you sure you want to delete all messages with ${chatWith}? This action cannot be undone.`)) {
+                $.ajax({
+                    url: "/delete_chat",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        target_user: chatWith,
+                        include_vanish: vanishMode
+                    }),
+                    success: function(resp) {
+                        if (resp.success) {
+                            showToast(`Chat with ${chatWith} deleted successfully`, "success");
+
+                            // Clear chat history
+                            $("#chatHistory").html(`
+                                <div class="text-center text-gray-400 py-8">
+                                    <i class="fas fa-comment-dots text-4xl mb-4 opacity-50"></i>
+                                    <div class="text-lg mb-2">Chat Deleted</div>
+                                    <div class="text-sm">All messages have been permanently deleted</div>
+                                </div>
+                            `);
+
+                            // Remove from contacts if no messages left
+                            if (resp.removed_from_contacts) {
+                                contacts = contacts.filter(c => c !== chatWith);
+                                delete contactsData[chatWith];
+                                delete lastMessageTimes[chatWith];
+                                displayUsers(contacts);
+
+                                // Reset chat header
+                                $(".chat-username").text("Select a user to chat");
+                                $("#chatFullName").hide();
+                                $("#deleteChatBtn").hide();
+                                chatWith = null;
+                                chatWithFullName = null;
+                            }
+
+                            // Clear vanish messages from memory
+                            if (vanishMode) {
+                                const chatKey = [username, chatWith].sort().join('_');
+                                delete vanishMessages[chatKey];
+                            }
+                        } else {
+                            showToast(resp.error || "Failed to delete chat", "error");
+                        }
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.error || "Failed to delete chat";
+                        showToast(errorMsg, "error");
+                    }
+                });
+            }
+        }
+
+        // Vanish mode toggle
+        $("#vanishToggle").on("click", function() {
+            vanishMode = !vanishMode;
+            updateVanishMode();
+        });
+
+        function updateVanishMode() {
+            const $body = $('body');
+            const $mainContainer = $('#mainContainer');
+            const $sidebar = $('#sidebar');
+            const $chatMain = $('#chatMain');
+            const $chatHeader = $('#chatWith');
+            const $chatList = $('#chatHistory');
+            const $chatFooter = $('.chat-footer');
+            const $hamburger = $('#hamburgerBtn');
+            const $messageInput = $('#messageInput');
+            const $sendBtn = $('#sendBtn');
+            const $vanishToggle = $('#vanishToggle');
+            const $toggleSwitch = $('#toggleSwitch');
+            const $toggleSlider = $('#toggleSlider');
+            const $vanishIndicator = $('#vanishIndicator');
+            const $profileSection = $('#profileSection');
+            const $searchInput = $('#searchUser');
+            const $searchIcon = $('#searchIcon');
+            const $searchClear = $('#searchClear');
+            const $searchLoading = $('#searchLoading');
+            const $searchResults = $('#searchResults');
+            const $userNotFound = $('#userNotFound');
+            const $logoutBtn = $('#logoutBtn');
+            const $editProfileBtn = $('#editProfileBtn');
+            const $shareBtn = $('#shareBtn');
+            const $deleteChatBtn = $('#deleteChatBtn');
+
+            if (vanishMode) {
+                // Enable vanish mode styling
+                $body.addClass('vanish-mode');
+                $mainContainer.addClass('vanish-mode');
+                $sidebar.addClass('vanish-mode');
+                $chatMain.addClass('vanish-mode');
+                $chatHeader.addClass('vanish-mode');
+                $chatList.addClass('vanish-mode');
+                $chatFooter.addClass('vanish-mode');
+                $hamburger.addClass('vanish-mode');
+                $messageInput.addClass('vanish-mode');
+                $sendBtn.addClass('vanish-mode');
+                $vanishToggle.addClass('active');
+                $toggleSwitch.addClass('active');
+                $toggleSlider.addClass('active');
+                $vanishIndicator.show();
+                $profileSection.addClass('vanish-mode');
+                $searchInput.addClass('vanish-mode');
+                $searchIcon.addClass('vanish-mode');
+                $searchClear.addClass('vanish-mode');
+                $searchLoading.addClass('vanish-mode');
+                $searchResults.addClass('vanish-mode');
+                $userNotFound.addClass('vanish-mode');
+                $logoutBtn.addClass('vanish-mode');
+                $editProfileBtn.addClass('vanish-mode');
+                $shareBtn.addClass('vanish-mode');
+                $deleteChatBtn.addClass('vanish-mode');
+
+                // Clear existing chat history when entering vanish mode
+                if (chatWith) {
+                    $("#chatHistory").empty().html(`
+                        <div class="text-center text-gray-400 py-8">
+                            <i class="fas fa-ghost text-4xl mb-4 opacity-50"></i>
+                            <div class="text-lg mb-2">Vanish Mode Active</div>
+                            <div class="text-sm">Messages will disappear when you logout or refresh</div>
+                        </div>
+                    `);
+                }
+
+                showToast("Vanish Mode activated! Messages won't be saved to database.", "vanish", 4000);
+            } else {
+                // Disable vanish mode styling
+                $body.removeClass('vanish-mode');
+                $mainContainer.removeClass('vanish-mode');
+                $sidebar.removeClass('vanish-mode');
+                $chatMain.removeClass('vanish-mode');
+                $chatHeader.removeClass('vanish-mode');
+                $chatList.removeClass('vanish-mode');
+                $chatFooter.removeClass('vanish-mode');
+                $hamburger.removeClass('vanish-mode');
+                $messageInput.removeClass('vanish-mode');
+                $sendBtn.removeClass('vanish-mode');
+                $vanishToggle.removeClass('active');
+                $toggleSwitch.removeClass('active');
+                $toggleSlider.removeClass('active');
+                $vanishIndicator.hide();
+                $profileSection.removeClass('vanish-mode');
+                $searchInput.removeClass('vanish-mode');
+                $searchIcon.removeClass('vanish-mode');
+                $searchClear.removeClass('vanish-mode');
+                $searchLoading.removeClass('vanish-mode');
+                $searchResults.removeClass('vanish-mode');
+                $userNotFound.removeClass('vanish-mode');
+                $logoutBtn.removeClass('vanish-mode');
+                $editProfileBtn.removeClass('vanish-mode');
+                $shareBtn.removeClass('vanish-mode');
+                $deleteChatBtn.removeClass('vanish-mode');
+
+                // Clear vanish messages and reload normal history
+                vanishMessages = {};
+                if (chatWith) {
+                    loadHistory();
+                }
+
+                showToast("Vanish Mode deactivated. Messages will be saved normally.", "success", 3000);
+            }
+
+            // Update all chat bubbles
+            $('.chat-bubble').each(function() {
+                if (vanishMode) {
+                    $(this).addClass('vanish-mode');
+                } else {
+                    $(this).removeClass('vanish-mode');
+                }
+            });
+
+            // Update contacts
+            $('.contact').each(function() {
+                if (vanishMode) {
+                    $(this).addClass('vanish-mode');
+                } else {
+                    $(this).removeClass('vanish-mode');
+                }
+            });
+
+            // Update contact avatars and delete buttons
+            $('.contact-avatar, .contact-delete').each(function() {
+                if (vanishMode) {
+                    $(this).addClass('vanish-mode');
+                } else {
+                    $(this).removeClass('vanish-mode');
+                }
+            });
+
+            // Update search result items and avatars
+            $('.search-result-item, .search-result-avatar').each(function() {
+                if (vanishMode) {
+                    $(this).addClass('vanish-mode');
+                } else {
+                    $(this).removeClass('vanish-mode');
+                }
+            });
+
+            // Update profile avatar
+            $('#currentUserAvatar').each(function() {
+                if (vanishMode) {
+                    $(this).addClass('vanish-mode');
+                } else {
+                    $(this).removeClass('vanish-mode');
+                }
+            });
+
+            // Update chat avatar
+            $('#chatAvatar').each(function() {
+                if (vanishMode) {
+                    $(this).addClass('vanish-mode');
+                } else {
+                    $(this).removeClass('vanish-mode');
+                }
+            });
+
+            // Update online indicators
+            $('.contact-online-indicator, .chat-online-indicator').each(function() {
+                if (vanishMode) {
+                    $(this).addClass('vanish-mode');
+                } else {
+                    $(this).removeClass('vanish-mode');
+                }
+            });
+        }
+
+        // Sidebar toggle functionality
+        $("#hamburgerBtn").on("click", function() {
+            $("#sidebar").toggleClass("collapsed");
+            $(this).find('i').toggleClass('fa-bars fa-times');
+        });
+
+        // Logout with vanish mode cleanup and loading animation
+        $("#logoutBtn").on("click", function() {
+            // Show loading state
+            $("#logoutSpinner").addClass('show');
+            $("#logoutIcon").hide();
+            $("#logoutText").text('Logging out...');
+            $(this).prop('disabled', true);
+
+            // Update status to offline
+            socket.emit('status_change', { username: username, status: 'offline' });
+
+            if (vanishMode) {
+                showToast("Vanish mode messages cleared. Logging out...", "vanish", 2000);
+                vanishMessages = {}; // Clear vanish messages
+            } else {
+                showToast("Logging out...", "info", 2000);
+            }
+
+            setTimeout(() => {
+                window.location = "/logout";
+            }, 1500);
+        });
+
+        // Socket.IO setup
+        const socket = io();
+        socket.emit('join', {username: username});
+
+        // Handle online users updates
+        socket.on('online_users', function(data) {
+            onlineUsers = new Set(data.users);
+            updateContactsOnlineStatus();
+        });
+
+        socket.on('user_online', function(data) {
+            onlineUsers.add(data.username);
+            updateContactOnlineStatus(data.username, true);
+        });
+
+        socket.on('user_offline', function(data) {
+            onlineUsers.delete(data.username);
+            updateContactOnlineStatus(data.username, false);
+
+            // Remove from typing users
+            typingUsers.delete(data.username);
+            updateTypingIndicator();
+        });
+
+        // Handle typing indicators
+        socket.on('user_typing', function(data) {
+            if (data.from === chatWith) {
+                typingUsers.add(data.from);
+                updateTypingIndicator();
+
+                // Auto-clear typing after 5 seconds
+                setTimeout(() => {
+                    typingUsers.delete(data.from);
+                    updateTypingIndicator();
+                }, 5000);
+            }
+        });
+
+        socket.on('user_stopped_typing', function(data) {
+            typingUsers.delete(data.from);
+            updateTypingIndicator();
+        });
+
+        // Handle message seen status
+        socket.on('messages_seen', function(data) {
+            if (data.by === chatWith) {
+                // Update UI to show that messages were seen
+                $('.message-status.me').addClass('seen').removeClass('delivered pending').html('<i class="fas fa-eye"></i> Seen');
+
+                // Show seen indicator in chat header
+                $("#chatSeen").addClass('show');
+                setTimeout(() => {
+                    $("#chatSeen").removeClass('show');
+                }, 3000);
+            }
+        });
+
+        // Handle message delivered status
+        socket.on('message_delivered', function(data) {
+            if (data.delivered_to === chatWith) {
+                // Update specific message status
+                const messageElement = $(`.chat-bubble[data-message-id="${data.message_id}"]`);
+                if (messageElement.length) {
+                    messageElement.find('.message-status').addClass('delivered').removeClass('pending').html('<i class="fas fa-check"></i> Delivered');
+                }
+            }
+        });
+
+        function updateTypingIndicator() {
+            if (typingUsers.size > 0 && typingUsers.has(chatWith)) {
+                $("#chatTyping").addClass('show');
+                $("#chatStatus").hide();
+            } else {
+                $("#chatTyping").removeClass('show');
+                $("#chatStatus").show();
+            }
+        }
+
+        function updateContactsOnlineStatus() {
+            $('.contact').each(function() {
+                const contactUsername = $(this).find('.contact-username').text();
+                const isOnline = onlineUsers.has(contactUsername);
+                $(this).find('.contact-online-indicator').removeClass('online offline').addClass(isOnline ? 'online' : 'offline');
+            });
+
+            // Update chat header if chatting with someone
+            if (chatWith) {
+                const isOnline = onlineUsers.has(chatWith);
+                $('#chatStatusIndicator').removeClass('online offline').addClass(isOnline ? 'online' : 'offline');
+                $('#chatStatusText').text(isOnline ? 'Online' : 'Offline');
+            }
+        }
+
+        function updateContactOnlineStatus(contactUsername, isOnline) {
+            $(`.contact:has(.contact-username:contains('${contactUsername}')) .contact-online-indicator`)
+                .removeClass('online offline').addClass(isOnline ? 'online' : 'offline');
+
+            // Update chat header if this is the current chat partner
+            if (chatWith === contactUsername) {
+                $('#chatStatusIndicator').removeClass('online offline').addClass(isOnline ? 'online' : 'offline');
+                $('#chatStatusText').text(isOnline ? 'Online' : 'Offline');
+            }
+        }
+
+        // Dynamic user search
+        $("#searchUser").on("input", function() {
+            const query = $(this).val().trim();
+
+            // Clear previous timeout
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+
+            // Hide previous results
+            $("#userNotFound").hide();
+            $("#searchResults").hide();
+
+            if (query.length === 0) {
+                $("#searchClear").hide();
+                loadContacts();
+                return;
+            }
+
+            $("#searchClear").show();
+
+            if (query.length < 2) {
+                return; // Wait for at least 2 characters
+            }
+
+            // Show loading
+            $("#searchLoading").show();
+            isSearching = true;
+
+            // Debounce search
+            searchTimeout = setTimeout(() => {
+                searchUsers(query);
+            }, 500);
+        });
+
+        // Search users function - now uses real backend API
+        function searchUsers(query) {
+            $.get(`/search_users/${encodeURIComponent(query)}`, function(resp) {
+                $("#searchLoading").hide();
+
+                if (resp.users && resp.users.length > 0) {
+                    displaySearchResults(resp.users);
+                } else {
+                    $("#userNotFound").show();
+                    $("#searchResults").hide();
+                }
+                isSearching = false;
+            }).fail(function() {
+                $("#searchLoading").hide();
+                $("#userNotFound").show();
+                $("#searchResults").hide();
+                isSearching = false;
+                showToast("Search failed. Please try again.", "error");
+            });
+        }
+
+        // Display search results
+        function displaySearchResults(users) {
+            let html = "";
+            users.forEach(function(user) {
+                const avatarHtml = user.avatar ?
+                    `<img src="${user.avatar}" alt="Avatar">` :
+                    `<i class="fas fa-user"></i>`;
+
+                html += `
+                    <div class="search-result-item${vanishMode ? ' vanish-mode' : ''}" onclick="startChatFromSearch('${user.username}', '${user.full_name || user.username}', '${user.avatar || ''}')">
+                        <div class="search-result-avatar${vanishMode ? ' vanish-mode' : ''}">
+                            ${avatarHtml}
+                        </div>
+                        <div class="search-result-details">
+                            <div class="search-result-username">${user.username}</div>
+                            <div class="search-result-fullname">${user.full_name || 'No name provided'}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            $("#searchResults").html(html).show();
+        }
+
+        // Start chat from search results
+        window.startChatFromSearch = function(targetUsername, targetFullName, targetAvatar) {
+            $("#searchUser").val("");
+            $("#searchClear").hide();
+            $("#searchResults").hide();
+            $("#userNotFound").hide();
+
+            // Add to contacts if not already there
+            if (!contacts.includes(targetUsername)) {
+                contacts.push(targetUsername);
+                contactsData[targetUsername] = {
+                    username: targetUsername,
+                    full_name: targetFullName,
+                    avatar: targetAvatar
+                };
+                // Update display immediately
+                displayUsers(contacts);
+            }
+
+            startChat(targetUsername, targetFullName, targetAvatar);
+        };
+
+        // Enter key search
+        $("#searchUser").on("keypress", function(e) {
+            if (e.which === 13) {
+                const query = $(this).val().trim();
+                if (query && query.length >= 2) {
+                    // If there are search results, start chat with first result
+                    const firstResult = $("#searchResults .search-result-item:first");
+                    if (firstResult.length > 0) {
+                        firstResult.click();
+                    }
+                }
+            }
+        });
+
+        // Hide search results when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.search-container').length) {
+                $("#searchResults").hide();
+            }
+        });
+
+        // Load contacts (users you've chatted with)
+        function loadContacts() {
+            $.get("/contacts", function(resp) {
+                contacts = resp.contacts || [];
+                contactsData = resp.contacts_data || {};
+                lastMessageTimes = resp.last_message_times || {};
+
+                // Sort contacts by last message time (most recent first)
+                contacts.sort((a, b) => {
+                    const timeA = lastMessageTimes[a] || '0';
+                    const timeB = lastMessageTimes[b] || '0';
+                    return timeB.localeCompare(timeA);
+                });
+
+                displayUsers(contacts);
+
+                // Auto-start chat if coming from share link
+                if (startChatWith && targetUserInfo) {
+                    setTimeout(() => {
+                        startChat(targetUserInfo.username, targetUserInfo.full_name, targetUserInfo.avatar);
+                    }, 1000);
+                }
+            }).fail(function() {
+                showToast("Failed to load contacts", "error");
+            });
+        }
+
+        // Display users in sidebar
+        function displayUsers(users) {
+            if (users.length === 0) {
+                $("#userList").html(`
+                    <div class="text-center text-gray-400 py-4">
+                        <i class="fas fa-users mb-2 text-2xl"></i>
+                        <div>No contacts yet</div>
+                        <div class="text-xs">Search for users to start chatting</div>
+                    </div>
+                `);
+                return;
+            }
+
+            let html = "";
+            users.forEach(function(user) {
+                if (user !== username) {
+                    const userData = contactsData[user] || { username: user, full_name: user, avatar: null };
+                    const unreadCount = unreadMessages[user] || 0;
+                    const badgeHtml = unreadCount > 0 ?
+                        `<span class="contact-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : '';
+
+                    const avatarHtml = userData.avatar ?
+                        `<img src="${userData.avatar}" alt="Avatar">` :
+                        `<i class="fas fa-user"></i>`;
+
+                    const isOnline = onlineUsers.has(user);
+                    const lastTime = lastMessageTimes[user];
+                    const timeDisplay = lastTime ? formatTime(lastTime) : '';
+
+                    // Check if user is typing
+                    const isTyping = typingUsers.has(user);
+                    const typingHtml = isTyping ? `<div class="typing-indicator show">typing...</div>` : '';
+
+                    html += `
+                        <div class="contact${user === chatWith ? ' active' : ''}${vanishMode ? ' vanish-mode' : ''}" onclick="startChat('${user}', '${userData.full_name}', '${userData.avatar || ''}')">
+                            <div class="contact-actions">
+                                <button class="contact-delete${vanishMode ? ' vanish-mode' : ''}" onclick="event.stopPropagation(); deleteContactChat('${user}')" title="Delete Chat">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-avatar${vanishMode ? ' vanish-mode' : ''}">
+                                    ${avatarHtml}
+                                    <div class="contact-online-indicator ${isOnline ? 'online' : 'offline'}${vanishMode ? ' vanish-mode' : ''}"></div>
+                                </div>
+                                <div class="contact-details">
+                                    <div class="contact-username">${user}</div>
+                                    <div class="contact-name">${userData.full_name !== user ? userData.full_name : ''}</div>
+                                    ${typingHtml}
+                                </div>
+                            </div>
+                            <div class="contact-badges">
+                                <div class="contact-time">${timeDisplay}</div>
+                                ${badgeHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            $("#userList").html(html);
+        }
+
+        // Delete contact chat function
+        window.deleteContactChat = function(targetUser) {
+            if (confirm(`Delete all messages with ${targetUser}?`)) {
+                $.ajax({
+                    url: "/delete_chat",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        target_user: targetUser,
+                        include_vanish: true
+                    }),
+                    success: function(resp) {
+                        if (resp.success) {
+                            showToast(`Chat with ${targetUser} deleted`, "success");
+
+                            // Remove from contacts
+                            contacts = contacts.filter(c => c !== targetUser);
+                            delete contactsData[targetUser];
+                            delete lastMessageTimes[targetUser];
+                            delete unreadMessages[targetUser];
+
+                            // If this was the active chat, reset it
+                            if (chatWith === targetUser) {
+                                chatWith = null;
+                                chatWithFullName = null;
+                                $(".chat-username").text("Select a user to chat");
+                                $("#chatFullName").hide();
+                                $("#deleteChatBtn").hide();
+                                $("#chatHistory").html(`
+                                    <div class="text-center text-gray-400 py-8">
+                                        <i class="fas fa-comment-dots text-4xl mb-4 opacity-50"></i>
+                                        <div class="text-lg mb-2">Welcome to Secure Chat</div>
+                                        <div class="text-sm">Select a contact or search for a user to start messaging</div>
+                                    </div>
+                                `);
+                            }
+
+                            displayUsers(contacts);
+                        } else {
+                            showToast(resp.error || "Failed to delete chat", "error");
+                        }
+                    },
+                    error: function() {
+                        showToast("Failed to delete chat", "error");
+                    }
+                });
+            }
+        };
+
+        // Format time for display
+        function formatTime(timeString) {
+            if (!timeString) return '';
+
+            try {
+                const date = new Date(timeString);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMs / 3600000);
+                const diffDays = Math.floor(diffMs / 86400000);
+
+                if (diffMins < 1) return 'now';
+                if (diffMins < 60) return `${diffMins}m`;
+                if (diffHours < 24) return `${diffHours}h`;
+                if (diffDays < 7) return `${diffDays}d`;
+
+                return date.toLocaleDateString();
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Start chat function
+        window.startChat = function(target, fullName = null, avatar = null) {
+            if (target && target !== username) {
+                chatWith = target;
+                chatWithFullName = fullName || target;
+
+                // Clear unread messages for this user
+                if (unreadMessages[target]) {
+                    delete unreadMessages[target];
+                    displayUsers(contacts);
+                }
+
+                $(".contact").removeClass("active");
+                $(`.contact:has(.contact-username:contains('${target}'))`).addClass("active");
+
+                // Update chat header with username, full name, and avatar
+                const avatarHtml = avatar ?
+                    `<img src="${avatar}" alt="Avatar">` :
+                    `<i class="fas fa-user"></i>`;
+
+                const isOnline = onlineUsers.has(target);
+
+                $("#chatAvatar").html(`
+                    ${avatarHtml}
+                    <div class="chat-online-indicator ${isOnline ? 'online' : 'offline'}${vanishMode ? ' vanish-mode' : ''}"></div>
+                `);
+
+                $(".chat-username").text(`@${target}`);
+                if (fullName && fullName !== target) {
+                    $("#chatFullName").text(fullName).show();
+                } else {
+                    $("#chatFullName").hide();
+                }
+
+                // Update status indicators
+                $("#chatStatusIndicator").removeClass('online offline').addClass(isOnline ? 'online' : 'offline');
+                $("#chatStatusText").text(isOnline ? 'Online' : 'Offline');
+                $("#chatStatus").show();
+                $("#chatTyping").removeClass('show');
+
+                $("#deleteChatBtn").show();
+
+                fetchPublicKey(chatWith, function(pubKey) {
+                    theirPublicKey = pubKey;
+                    if (vanishMode) {
+                        loadVanishHistory();
+                    } else {
+                        loadHistory();
+                    }
+                });
+
+                // Mark messages as seen
+                if (isPageVisible) {
+                    markMessagesAsSeen(target);
+                }
+
+                // Clear search
+                $("#searchUser").val("");
+                $("#searchClear").hide();
+                $("#userNotFound").hide();
+                $("#searchResults").hide();
+
+                showToast(`Started chat with ${fullName || target}${vanishMode ? ' (Vanish Mode)' : ''}`, vanishMode ? "vanish" : "success", 3000);
+
+                // Auto-collapse sidebar on mobile
+                if (window.innerWidth <= 768) {
+                    $("#sidebar").addClass("collapsed");
+                    $("#hamburgerBtn").find('i').removeClass('fa-times').addClass('fa-bars');
+                }
+            }
+        };
+
+        // Load chat history (normal mode)
+        function loadHistory() {
+            $("#chatHistory").empty();
+            if (!chatWith) return;
+
+            // Show loading
+            $("#chatHistory").html(`
+                <div class="text-center text-gray-400 py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                    <div>Loading messages<span class="loading-dots"></span></div>
+                </div>
+            `);
+
+            socket.emit('fetch_history', {user1: username, user2: chatWith});
+        }
+
+        // Load vanish mode history (from memory only)
+        function loadVanishHistory() {
+            $("#chatHistory").empty();
+            if (!chatWith) return;
+
+            const chatKey = [username, chatWith].sort().join('_');
+            const messages = vanishMessages[chatKey] || [];
+
+            if (messages.length === 0) {
+                $("#chatHistory").html(`
+                    <div class="text-center text-gray-400 py-8">
+                        <i class="fas fa-ghost text-4xl mb-4 opacity-50"></i>
+                        <div class="text-lg mb-2">Vanish Mode Active</div>
+                        <div class="text-sm">Messages will disappear when you logout or refresh</div>
+                    </div>
+                `);
+            } else {
+                messages.forEach(function(msg) {
+                    appendMessage(msg, false);
+                });
+                scrollToBottom();
+            }
+        }
+
+        // Receive chat history (normal mode only)
+        socket.on('chat_history', function(messages) {
+            if (vanishMode) return; // Ignore if in vanish mode
+
+            $("#chatHistory").empty();
+            if (messages && messages.length) {
+                messages.forEach(function(msg) {
+                    appendMessage(msg, false);
+                });
+                scrollToBottom();
+            } else {
+                $("#chatHistory").html(`
+                    <div class="text-center text-gray-400 py-8">
+                        <i class="fas fa-comment-dots text-4xl mb-4 opacity-50"></i>
+                        <div class="text-lg mb-2">No messages yet</div>
+                        <div class="text-sm">Start the conversation!</div>
+                    </div>
+                `);
+            }
+        });
+
+        // Append message to chat with persistent status
+        function appendMessage(msg, animate = true) {
+            const isMe = msg.sender === username;
+            const bubbleClass = isMe ? "me" : "other";
+            const time = msg.time || "";
+            let text = "";
+
+            try {
+                text = decryptMessage(msg.message);
+            } catch(e) {
+                text = "[Encrypted]";
+            }
+
+            // Message status for sent messages with persistent status
+            let statusHtml = '';
+            if (isMe && !vanishMode) {
+                let statusClass = 'pending';
+                let statusText = 'Sent';
+                let statusIcon = 'fa-clock';
+
+                // Use the persistent status from database
+                if (msg.seen) {
+                    statusClass = 'seen';
+                    statusText = 'Seen';
+                    statusIcon = 'fa-eye';
+                } else if (msg.delivered) {
+                    statusClass = 'delivered';
+                    statusText = 'Delivered';
+                    statusIcon = 'fa-check';
+                }
+
+                statusHtml = `
+                    <div class="message-status ${bubbleClass} ${statusClass}">
+                        <span>${statusText}</span>
+                        <i class="fas ${statusIcon}"></i>
+                    </div>
+                `;
+            }
+
+            const messageId = msg.message_id || '';
+            const messageHtml = `
+                <div class="chat-bubble ${bubbleClass}${vanishMode ? ' vanish-mode' : ''}" data-message-id="${messageId}" ${animate ? 'style="animation-delay: 0.1s"' : ''}>
+                    <div class="text-xs opacity-70 mb-2 flex justify-between items-center">
+                        <span><i class="fas ${isMe ? 'fa-user' : 'fa-user-friends'} mr-1"></i>${isMe ? "You" : chatWith}</span>
+                        <span><i class="fas fa-clock mr-1"></i>${time}</span>
+                    </div>
+                    <div>${text}</div>
+                    ${statusHtml}
+                </div>
+            `;
+
+            $("#chatHistory").append(messageHtml);
+        }
+
+        // Scroll to bottom
+        function scrollToBottom() {
+            const chatHistory = $("#chatHistory")[0];
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Send message
+        $("#sendForm").on("submit", function(e) {
+            e.preventDefault();
+            const msg = $("#messageInput").val().trim();
+
+            if (!msg || !chatWith || !theirPublicKey) {
+                if (!chatWith) {
+                    showToast("Please select a user to chat with", "error");
+                }
+                return;
+            }
+
+            // Stop typing indicator
+            stopTyping();
+
+            const encrypted = encryptMessage(msg, theirPublicKey);
+            const now = new Date();
+            const time = now.getFullYear() + "-" +
+                String(now.getMonth() + 1).padStart(2, '0') + "-" +
+                String(now.getDate()).padStart(2, '0') + " " +
+                String(now.getHours()).padStart(2, '0') + ":" +
+                String(now.getMinutes()).padStart(2, '0') + ":" +
+                String(now.getSeconds()).padStart(2, '0');
+
+            const messageData = {
+                sender: username,
+                receiver: chatWith,
+                message: encrypted,
+                time: time,
+                vanish_mode: vanishMode
+            };
+
+            if (vanishMode) {
+                // Store in memory only for vanish mode
+                const chatKey = [username, chatWith].sort().join('_');
+                if (!vanishMessages[chatKey]) {
+                    vanishMessages[chatKey] = [];
+                }
+                vanishMessages[chatKey].push(messageData);
+
+                // Send to other user but don't store in database
+                socket.emit('send_vanish_message', messageData);
+            } else {
+                // Normal message - store in database
+                socket.emit('send_message', messageData);
+
+                // Update last message time and re-sort contacts
+                lastMessageTimes[chatWith] = time;
+                updateContactOrder();
+            }
+
+            $("#messageInput").val("");
+
+            // Optimistically add to chat
+            appendMessage(messageData, true);
+            scrollToBottom();
+        });
+
+        // Update contact order based on last message time
+        function updateContactOrder() {
+            contacts.sort((a, b) => {
+                const timeA = lastMessageTimes[a] || '0';
+                const timeB = lastMessageTimes[b] || '0';
+                return timeB.localeCompare(timeA);
+            });
+            displayUsers(contacts);
+        }
+
+        // Receive normal message
+        socket.on('receive_message', function(data) {
+            if (vanishMode) return; // Ignore normal messages in vanish mode
+
+            if (data.sender === chatWith) {
+                // Message from current chat partner
+                appendMessage(data, true);
+                scrollToBottom();
+
+                // Mark as seen if page is visible
+                if (isPageVisible) {
+                    markMessagesAsSeen(data.sender);
+                }
+
+                // Show notification
+                showToast(`New message from ${data.sender}`, "info", 3000);
+            } else {
+                // Message from someone else - add to unread count
+                if (!unreadMessages[data.sender]) {
+                    unreadMessages[data.sender] = 0;
+                }
+                unreadMessages[data.sender]++;
+
+                // Update contacts list to show badge
+                if (!contacts.includes(data.sender)) {
+                    contacts.push(data.sender);
+                    // Fetch user info for new contact
+                    fetchUserInfo(data.sender);
+                } else {
+                    // Update last message time and re-sort
+                    lastMessageTimes[data.sender] = data.time;
+                    updateContactOrder();
+                }
+
+                // Show notification with sound and browser notification
+                const notificationTitle = `New message from ${data.sender}`;
+                const notificationBody = 'You have a new message in SecureChat';
+
+                showToast(notificationTitle, "info", 4000);
+
+                // Show browser notification even if page is not visible
+                if (!isPageVisible || data.sender !== chatWith) {
+                    showBrowserNotification(notificationTitle, notificationBody);
+                }
+
+                if (notificationSoundEnabled) {
+                    playNotificationSound();
+                }
+            }
+        });
+
+        // Receive vanish message
+        socket.on('receive_vanish_message', function(data) {
+            if (!vanishMode) return; // Ignore vanish messages in normal mode
+
+            if (data.sender === chatWith) {
+                // Store in memory
+                const chatKey = [username, chatWith].sort().join('_');
+                if (!vanishMessages[chatKey]) {
+                    vanishMessages[chatKey] = [];
+                }
+                vanishMessages[chatKey].push(data);
+
+                // Display message
+                appendMessage(data, true);
+                scrollToBottom();
+
+                // Show notification
+                showToast(`New vanish message from ${data.sender}`, "vanish", 3000);
+            } else {
+                // Show notification for vanish message from other user
+                const notificationTitle = `New vanish message from ${data.sender}`;
+                const notificationBody = 'You have a new vanish message in SecureChat';
+
+                showToast(notificationTitle, "vanish", 4000);
+
+                // Show browser notification
+                if (!isPageVisible) {
+                    showBrowserNotification(notificationTitle, notificationBody);
+                }
+
+                if (notificationSoundEnabled) {
+                    playNotificationSound();
+                }
+            }
+        });
+
+        // Fetch user info for new contacts
+        function fetchUserInfo(username) {
+            $.get(`/user_info/${username}`, function(resp) {
+                if (resp.user) {
+                    contactsData[username] = resp.user;
+                    displayUsers(contacts);
+                }
+            }).fail(function() {
+                // If fetch fails, use username as fallback
+                contactsData[username] = { username: username, full_name: username, avatar: null };
+            });
+        }
+
+        // Play notification sound
+        function playNotificationSound() {
+            try {
+                // Create a simple notification sound using Web Audio API
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                // Fallback: try to play a simple beep
+                console.log('Notification sound failed:', e);
+            }
+        }
+
+        // Fetch public key
+        function fetchPublicKey(user, callback) {
+            $.get(`/public_key/${user}`, function(resp) {
+                if (resp.public_key) {
+                    callback(resp.public_key);
+                } else {
+                    showToast("Failed to fetch public key", "error");
+                }
+            }).fail(function() {
+                showToast("Failed to fetch public key", "error");
+            });
+        }
+
+        // Encryption/Decryption functions (simplified for demo)
+        function encryptMessage(message, publicKey) {
+            try {
+                // In a real implementation, you would use proper RSA encryption
+                // For demo purposes, we'll use base64 encoding
+                return btoa(unescape(encodeURIComponent(message)));
+            } catch (e) {
+                console.error("Encryption failed:", e);
+                return message;
+            }
+        }
+
+        function decryptMessage(encryptedMessage) {
+            try {
+                // In a real implementation, you would use proper RSA decryption
+                // For demo purposes, we'll use base64 decoding
+                return decodeURIComponent(escape(atob(encryptedMessage)));
+            } catch (e) {
+                console.error("Decryption failed:", e);
+                return "[Decryption Failed]";
+            }
+        }
+
+        // Initialize app
+        $(document).ready(function() {
+            loadUserProfile();
+            loadContacts();
+            updateOnlineStatus();
+
+            // Auto-focus message input when chat is selected
+            $(document).on('click', '.contact', function() {
+                setTimeout(() => {
+                    $("#messageInput").focus();
+                }, 100);
+            });
+
+            // Handle window resize for responsive design
+            $(window).on('resize', function() {
+                if (window.innerWidth > 768) {
+                    $("#sidebar").removeClass("collapsed");
+                    $("#hamburgerBtn").find('i').removeClass('fa-times').addClass('fa-bars');
+                }
+            });
+
+            // Prevent form submission on empty message
+            $("#messageInput").on('keypress', function(e) {
+                if (e.which === 13 && !e.shiftKey) {
+                    e.preventDefault();
+                    $("#sendForm").submit();
+                }
+            });
+
+            // Auto-resize message input
+            $("#messageInput").on('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+
+            // Handle connection status
+            socket.on('connect', function() {
+                showToast("Connected to server", "success", 2000);
+            });
+
+            socket.on('disconnect', function() {
+                showToast("Disconnected from server", "error", 3000);
+            });
+
+            socket.on('reconnect', function() {
+                showToast("Reconnected to server", "success", 2000);
+                // Rejoin room and update status
+                socket.emit('join', {username: username});
+                updateOnlineStatus();
+            });
+        });
+    </script>
 </body>
 </html>

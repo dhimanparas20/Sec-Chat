@@ -1,0 +1,16 @@
+[project]
+name = "play"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cryptography>=45.0.4",
+    "dotenv>=0.9.9",
+    "flask>=3.1.1",
+    "flask-restful>=0.3.10",
+    "flask-socketio>=5.5.1",
+    "passlib>=1.7.4",
+    "pillow>=11.2.1",
+    "pymongo>=4.13.2",
+]
