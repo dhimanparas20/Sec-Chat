@@ -9,3 +9,7 @@ wheels/
 # Virtual environments
 .venv
 .idea
+
+keys/
+static/uploads
+chat_app.log
